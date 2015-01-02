@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-public class TestController {
-    @RequestMapping(value = "/")
+public class AlcoholKindController {
+    String[] alcohols = {"VODKA", "BEER", "TEQUILA", "RUM"};
+
+    @RequestMapping(value = "/alcoholKind")
     @ResponseBody
-    public String addMatrixes() {
-        return "test";
+    public String[] listAlcohols() {
+        return alcohols;
     }
 }
