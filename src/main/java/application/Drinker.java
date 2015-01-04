@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @author Marcin Michałek
  */
 
-public class Drinker implements Serializable {
+public class Drinker implements Serializable, Comparable<Drinker> {
     private String name;
     private double age;
     private double weight;
@@ -124,5 +124,10 @@ public class Drinker implements Serializable {
 
     public void setDrinkingParameters(DrinkingParameters drinkingParameters) {
         this.drinkingParameters = drinkingParameters;
+    }
+
+    @Override
+    public int compareTo( Drinker o) {
+        return Integer.compare(o.getDrinkingParameters().getRounds(), this.getDrinkingParameters().getRounds());
     }
 }
