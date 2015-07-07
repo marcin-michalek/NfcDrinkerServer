@@ -2,8 +2,9 @@
  * Created by Marcin Michałek on 2015-01-02.
  *
  */
-package application;
+package pl.michalek.marcin.nfcdrinkerserver.model;
 
+import pl.michalek.marcin.nfcdrinkerserver.config.DrinkingConstants;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -24,6 +25,8 @@ public class Drinker implements Serializable, Comparable<Drinker> {
     private String gender;
     private String alcoholKind;
     private double alcoholVoltage;
+    private double shotCapacity;
+    private double currentSimpleMethodPromile;
     private DrinkingParameters drinkingParameters;
 
     @Override
@@ -37,6 +40,7 @@ public class Drinker implements Serializable, Comparable<Drinker> {
                 .append(gender)
                 .append(alcoholKind)
                 .append(alcoholVoltage)
+                .append(shotCapacity)
                 .toHashCode();
     }
 
@@ -51,7 +55,19 @@ public class Drinker implements Serializable, Comparable<Drinker> {
         return new EqualsBuilder()
                 .append(name, drinker.name)
                 .append(age, drinker.age)
+                .append(weight, drinker.weight)
+                .append(height, drinker.height)
+                .append(stomach, drinker.stomach)
+                .append(gender, drinker.gender)
+                .append(alcoholKind, drinker.alcoholKind)
+                .append(alcoholVoltage, drinker.alcoholVoltage)
+                .append(shotCapacity, drinker.shotCapacity)
                 .isEquals();
+    }
+
+    public void calculateCurrentPromilsSimpleMethod(){
+        currentSimpleMethodPromile = (shotCapacity * (alcoholVoltage/100) * DrinkingConstants.ALCOHOL_DENSITY_GRAM_PER_MILLILITER)
+                / weight * DrinkingConstants.WATER_IN_BODY_PERCENTAGE.get(gender);
     }
 
     public String getName() {
@@ -119,6 +135,7 @@ public class Drinker implements Serializable, Comparable<Drinker> {
     }
 
     public DrinkingParameters getDrinkingParameters() {
+        drinkingParameters.updateMinutesFromFirstDrink();
         return drinkingParameters;
     }
 
@@ -129,5 +146,21 @@ public class Drinker implements Serializable, Comparable<Drinker> {
     @Override
     public int compareTo( Drinker o) {
         return Integer.compare(o.getDrinkingParameters().getRounds(), this.getDrinkingParameters().getRounds());
+    }
+
+    public double getShotCapacity() {
+        return shotCapacity;
+    }
+
+    public void setShotCapacity(double shotCapacity) {
+        this.shotCapacity = shotCapacity;
+    }
+
+    public double getCurrentSimpleMethodPromile() {
+        return currentSimpleMethodPromile;
+    }
+
+    public void setCurrentSimpleMethodPromile(double currentSimpleMethodPromile) {
+        this.currentSimpleMethodPromile = currentSimpleMethodPromile;
     }
 }
